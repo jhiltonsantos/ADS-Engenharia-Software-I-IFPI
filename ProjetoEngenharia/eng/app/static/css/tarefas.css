@@ -1,0 +1,88 @@
+.botao {
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 16px;
+    color: white;
+    text-transform: uppercase;
+    box-shadow: 1px 1px 1px 2px rgb(71, 65, 65);
+}
+
+.botao:hover{
+    box-shadow: 0 2px 16px 0 #8080ff;
+}
+
+.importar {
+    margin-top: 10px;
+    margin-right: 5px;
+    align-self: flex-end;
+    background: #8080ff;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.fundo-azul {
+    background-color: #4dd2ff;
+}
+
+.container-principal {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.container-botoes {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    margin: 6px;
+}
+
+.container-listagem {
+    display: flex;
+    flex-flow: column wrap;
+    margin-top: 30px;
+}
+
+.container-cards {
+    display: flex;
+    flex-flow: row wrap;
+    margin-left: 30px;
+
+}
+
+.container-cards a {
+    text-decoration: none;
+    color: black;
+}
+
+@media (max-width: 750px) {
+    .container-botoes{
+        padding: 0;
+    }
+
+    .menu-superior {
+        margin: 2px;
+    }
+
+    .item-menu-superior{
+        font-size: 14px;
+    }
+
+    .titulo-barra {
+        font-size: 14px;
+    }
+
+    .botao {
+        padding: 10px 3px;
+    }
+
+    .importar {
+        font-size: 14px;
+    }
+    
+    .container-cards{
+        padding: 0px;
+    }
+
+    
+}

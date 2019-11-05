@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Alunos</title>
+    <link rel="stylesheet" href="{% static 'css/template-base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/alunos.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <nav class="menu-superior">
+        <a href="{% url 'home' %}" class="item-menu-superior fundo-vermelho">Tarefas</a>
+        <a href="{% url 'listar_alunos' %}" class="item-menu-superior fundo-vermelho">Alunos</a>
+    </nav>
+
+    <div class="container-conteudo">
+        <h2>Alunos</h2>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>NOME COMPLETO</th>
+            </tr>
+            {% if list_aluno %}
+				{% for aluno in list_aluno %}
+					<tr>
+		                <td class="tabela-aluno-id">{{ aluno.id }}</td>
+		                <td>{{ aluno.nome_aluno }}</td>
+		            </tr>
+				{% endfor %}
+            {% endif %}
+        </table>
+    </div>
+
+</body>
+
+</html>

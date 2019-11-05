@@ -1,0 +1,44 @@
+* {
+    margin: 0;
+    font-family: 'Roboto Slab', serif;
+}
+
+html {
+    /*height: 100%;*/
+}
+
+body {
+    font-size: 16px;
+    /*background: linear-gradient(to bottom, #6699ff 0%, #99ccff 0%);*/
+    /*background-color: #660066;*/
+    /*background: linear-gradient(to bottom, #660066 100%, #cc0099 0%);*/
+    background: linear-gradient(to bottom, #660066 0%, #9c008f 100%);
+    height: 100%;
+}
+
+.menu-superior {
+    display: flex;
+    flex-wrap: wrap;
+    /*background-color: #383535;*/
+    background-color: #333333;
+    height: 90px;
+    align-items: center;
+    list-style: none;
+    /*border-radius: 10px;*/
+    margin: 0px;
+}
+
+.item-menu-superior{
+    color: white;
+    text-transform: uppercase;
+    margin: 10px;
+    font-weight: bold;
+    font-size: 18px;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 10px;
+}
+
+.fundo-vermelho {
+    background-color: #ff4d4d;
+}

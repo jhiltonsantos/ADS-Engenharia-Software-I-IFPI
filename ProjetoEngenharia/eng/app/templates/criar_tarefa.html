@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tarefa</title>
+    <link rel="stylesheet" href="{% static 'css/template-base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/nova-tarefa.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <nav class="menu-superior">
+        <a href="{% url 'home' %}" class="item-menu-superior fundo-vermelho">Tarefas</a>
+        <a href="{% url 'listar_alunos' %}" class="item-menu-superior fundo-vermelho">Alunos</a>
+    </nav>
+
+    <div class="container-conteudo">
+        <h2>Nova Tarefa</h2>
+        <form action="{% url 'create_tarefa' %}" method="post" class="container-formulario">
+        	{% csrf_token %}
+            <h3>Título</h3>
+			<input type="text" name="nome" id="tarefa-titulo"  placeholder="Tarefa">
+            <h3>Descricao</h3>
+            <textarea name="desc" id="tarefa-descricao" cols="30" rows="10" placeholder="Descricao"></textarea>
+            <h3>Data</h3>
+            <input type="date" name="data" id="tarefa-data">
+            <input type="submit" name="Salvar" class="botao importar centro"/>
+        </form>
+    </div>
+
+
+</body>
+
+</html>
