@@ -1,0 +1,56 @@
+<html lang="pt-br">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tarefas</title>
+    <link rel="stylesheet" href="{% static 'css/tarefas.css' %}">
+    <link rel="stylesheet" href="{% static 'css/card-tarefa.css' %}">
+    <link rel="stylesheet" href="{% static 'css/template-base.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="menu-superior">
+        <a href="{% url 'home' %}" class="item-menu-superior fundo-vermelho">Tarefas</a>
+        <a href="{% url 'listar_alunos' %}" class="item-menu-superior fundo-vermelho">Alunos</a>
+    </nav>
+
+    <div class="container-principal">
+
+        <div class="container-botoes">
+            <a href="{% url 'criar_tarefa' %}" class="botao importar">Nova Tarefa</a>
+            <form method="post" action="{% url 'importar' %}" enctype="multipart/form-data">
+		    	{% csrf_token %}
+		    	<input type="file" name="arquivo" />
+		    	<input type="submit" name="Enviar">
+		    </form>
+        </div>
+
+        <div class="container-listagem">
+
+            <div class="container-cards">
+            	{% if list_tarefa %}
+            	{% for t in list_tarefa %}	
+	                <a href="{% url 'listar_tarefa' t.id %}">
+	                    <div class="card">
+	                            <img src="{% static 'img/ic_tarefa_laranja.jpg' %}" />
+	                            <span class="titulo-card">{{ t.tarefa }}</span>
+	                            <span class="data-card">20/10/2019</span>
+	                            <span class="descricao-card">{{ t.descricao }}</span>
+	                            <span class="aluno-card">{{ t.aluno.nome_aluno }}</span>
+	                    </div>
+	                </a>
+	            {% endfor %}
+	            {% endif %}
+            </div>
+            
+        </div>
+
+    </div>
+
+
+</body>
+
+</html>
