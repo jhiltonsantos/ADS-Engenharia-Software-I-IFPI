@@ -5,7 +5,7 @@ class Application:
         self.widget1 = Frame(master)
         self.widget1.pack()
         
-        self.msg = Label(self.widget1, text="Primeira Label")
+        self.msg = Label(self.widget1, text="Primeira Widget")
         self.msg["font"] = ("Verdana", "10", "italic", "bold")
         self.msg.pack()
 
@@ -14,11 +14,11 @@ class Application:
         self.sair["font"] = ("Calibri", "10")
         self.sair["width"] = 10
         self.sair.bind("<Button-1>", self.mudarTexto)
-        #self.sair["command"] = self.widget1.quit
+        #self.sair["command"] = self.mudarTexto
         self.sair.pack()
     
 
-    def mudarTexto(self, event):
+    def mudarTexto(self):
         if self.msg["text"] == "Primeiro Widget":
             self.msg["text"] = "O botão recebeu um clique..."
         
