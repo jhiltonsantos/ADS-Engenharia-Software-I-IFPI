@@ -1,0 +1,7 @@
+"DIA","PONTOS","BACKLOG"
+"1","40","-"
+"2","40","-"
+"3","20","Associas as Tarefas aos Grupos ou Alunos no Banco de Dados(G)"
+"4","10","Tela para Sortear Tarefas ao Grupos ou Alunos(M)"
+"5","5","Metodo de Ordenacao Para Gerar uma Lista e Retornar Para View(P)"
+"6","0","Listagem Dentro da Pagina de Tarefas(P)"
