@@ -1,0 +1,7 @@
+"DIA","PONTOS","BACKLOG"
+"0","50","-"
+"1","50","-"
+"2","40","Gerar Classe Evento e Ligar a Classe Atividade"
+"3","25","Criar uma tela de Cadastro dos Eventos"
+"4","5","Receber dados do formulário para gerar e armazenar o evento"
+"5","0","Aptar a Tela Inicial para Mostrar os Eventos Cadastrados"
