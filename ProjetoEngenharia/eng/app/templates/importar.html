@@ -1,0 +1,48 @@
+{% extends 'template_base.html' %}
+
+{% block content %}
+
+<div class="container-fluid d-flex flex-column align-items-center justify-content-center" style="height: 100vh;">
+    <div class="row">
+        <h4 class="font-weight-bold">Upload</h4>
+    </div>
+    <div class="row">
+        <form method="post" action="{% url 'importar' %}" enctype="multipart/form-data" class="d-flex">
+            {% csrf_token %} 
+            <label for="file-upload" class="btn-floating btn-large purple" id="bt-file-upload">
+                <i class="large material-icons">attachment</i>
+            </label>
+            <input type="file" id="file-upload" accept=".csv" name="file-upload"></input>
+
+            <h5 class="white-text align-self-center p-3" id="file-name">Importe CSV</h5>
+
+            <label for="submit-upload" class="btn-floating btn-large purple" id="bt-send-file" style="visibility: hidden;">
+                <i class="material-icons">send</i>
+            </label>
+            <input type="submit" id="submit-upload" value="enviar" />
+        </form>
+    </div>
+</div>
+
+<script>
+    // Obtendo o nome do arquivo importado
+    const btFileUpload = document.querySelector('#bt-file-upload')
+    const inputFileUpload = document.querySelector('#file-upload')
+    const textHtmlNameFile = document.querySelector('#file-name')
+    const btSendFile = document.querySelector('#bt-send-file')
+
+    inputFileUpload.addEventListener('change', () => {
+        let nameFile = inputFileUpload.files[0].name.length > 0 ? inputFileUpload.files[0].name : "Importe CSV"
+        if (inputFileUpload.files[0].type !== "text/csv" && inputFileUpload.files[0].type !== 'application/vnd.ms-excel') {
+            btSendFile.style = "visibility: hidden;"
+            nameFile = "Arquivo inválido"
+        } else {
+            btSendFile.style = "visibility: visible;"
+        }
+
+        textHtmlNameFile.innerHTML = nameFile
+    })
+
+</script>
+
+{% endblock  %}

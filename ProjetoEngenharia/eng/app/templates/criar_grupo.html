@@ -1,0 +1,84 @@
+{% extends 'template_base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-sm-12">
+            <form action="{% url 'create_grupo' %}" method="post" class="border border-dark z-depth-2 p-5">
+                {% csrf_token %}
+                <div class="form-group">
+                    <div class="d-flex align-items-center">
+                        <h4 class="font-weight-bold">
+                            Alunos Disponíveis: <h4 class="ml-3 font-weight-bold">{{ aluno_disp }}</h4>
+                        </h4>
+                    </div>
+                    <label for="rdg-forma-distribuicao" class="h4 white-text font-weight-bold">Forma de
+                        distribuição</label>
+                    <div id="rdg-forma-distribuicao">
+                        <div class="custom-control custom-radio custom-control-inline mt-3">
+                            <input type="radio" class="custom-control-input" id="rb-grupos" value="grupo"
+                                name="rb-grupos">
+                            <label class="custom-control-label white-text h5" for="rb-grupos">Grupos</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline ml-5">
+                            <input type="radio" class="custom-control-input" id="rb-alunos" value="aluno"
+                                name="rb-grupos">
+                            <label class="custom-control-label white-text h5" for="rb-alunos">Alunos</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="tarefa-minutos">
+                        <h4 class="white-text font-weight-bold">Quantidade</h4>
+                    </label>
+                    <input type="number" class="form-control" name="quant" id="quantidade" placeholder="Ex: 5" required>
+                </div>
+
+                <div class="row justify-content-center mt-5" style="width: 100%;">
+                    <input type="submit" value="GERAR" class="btn btn-cyan font-weight-bold"
+                        style="visibility: hidden;" id="bt-gerar">
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+    const rbAlunos = document.querySelector('#rb-alunos')
+    const rbGrupos = document.querySelector('#rb-grupos')
+    const campoQuantidade = document.querySelector('#quantidade')
+    const btGerar = document.querySelector('#bt-gerar')
+    let quantidade = 0
+
+
+    function alteraVisibilidadeBotao() {
+        if (rbAlunos.checked && quantidade >= 2 && quantidade <=({{ aluno_disp }} - 2)) {
+            btGerar.style = "visibility: visible;"
+        } else if (rbGrupos.checked && quantidade >= 1 && quantidade <= ({{ aluno_disp }} / 2)) {
+            btGerar.style = "visibility: visible;"
+        } else {
+            btGerar.style = "visibility: hidden;"
+        }
+    }
+
+    campoQuantidade.addEventListener('input', (event) => {
+        quantidade = event.target.value
+        alteraVisibilidadeBotao()
+    })
+
+    rbAlunos.addEventListener('change', (event) => {
+        alteraVisibilidadeBotao()
+        rbGrupos.checked = false
+    })
+
+    rbGrupos.addEventListener('change', (event) => {
+        alteraVisibilidadeBotao()
+        rbAlunos.checked = false
+    })
+
+</script>
+{% endblock %}

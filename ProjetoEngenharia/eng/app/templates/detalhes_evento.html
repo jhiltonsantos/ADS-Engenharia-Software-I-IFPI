@@ -1,0 +1,64 @@
+{% extends 'template_base.html' %}
+
+{% block content %}
+
+<div class="container-fluid" style="height: 90%;">
+    {% if list_evento %}
+    {% for evento in list_evento %}
+    <div class="row justify-content-center pt-3">
+        <h2 class="font-weight-bold">{{ evento.titulo }}</h2>
+    </div>
+    <div class="row justify-content-center pt-3">
+        <h5 class="text-center pb-2">01/01/2020 - 31/01/2020</h5>
+        <h5 class="text-center pb-2">Seg - Ter - Qua</h5>
+        <h5>
+            {{ evento.descricao }}
+        </h5>
+    </div>
+    <div class="d-flex flex-wrap justify-content-center">
+        {% for tarefa in list_tarefa_evento %}
+        {% if tarefa.evento.id == evento.id %}
+        <!-- Tarefas do evento -->
+        <div class="my-card-tarefas elegant-color z-depth-2 mb-auto m-5">
+            <div class="d-flex flex-column text-center p-3">
+                <div class="text-titulo-card">
+                    {{ tarefa.tarefa }}
+                </div>
+                <div class="linha-card"></div>
+                <div class="m-2 text-subtitulo-card">
+                    {{ tarefa.data_entrega|date:'d/m/Y' }} | {{ tarefa.duracao }} minutos
+                </div>
+                <div class="text-descricao-card overflow-hidden">
+                    {{ tarefa.descricao }}
+                </div>
+                <div class="m-2 text-subtitulo-card">
+                    {% if tarefa.aluno %}
+                        {{ tarefa.aluno.nome_aluno }}
+                    {% elif tarefa.grupo %}
+                        Grupo {{ tarefa.grupo.id }}
+                    {% else %}
+                        Nenhum grupo/aluno sorteado
+                    {% endif %}
+                </div>
+                <div class="linha-card mb-3"></div>
+                <div class="d-flex justify-content-between flex-row flex-wrap">
+                    <a href="{% url 'sortear' tarefa.id %}" class="btn-floating btn-large green">
+                        <i class="large material-icons">sort</i>
+                    </a>
+                    <a href="{% url 'editar_tarefa' tarefa.id %}" class="btn-floating btn-large cyan">
+                        <i class="large material-icons">edit</i>
+                    </a>
+                    <a href="{% url 'excluir_tarefa' tarefa.id %}" class="btn-floating btn-large red">
+                        <i class="large material-icons">delete</i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    {% endfor %}
+    {% endif %}
+</div>
+
+{% endblock %}

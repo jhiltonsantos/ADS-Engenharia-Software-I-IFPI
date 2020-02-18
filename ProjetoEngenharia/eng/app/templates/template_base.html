@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>APP</title>
+
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.11/css/mdb.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/style.css">
+
+<body class="white-text">
+
+    <!--Navbar -->
+    <nav class="mb-1 navbar navbar-expand-lg navbar-dark pink">
+        <h3 class="font-weight-bold text-white">APP</h3>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#menu-links"
+            aria-controls="menu-links" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="menu-links">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link font-weight-bold" href="{% url 'importar_arquivo' %}" id="link-importar">
+                        IMPORTAR
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link font-weight-bold" href="{% url 'home' %}" id="link-tarefas">
+                        TAREFAS
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link font-weight-bold" href="{% url 'listar_grupos' %}" id="link-grupos">
+                        GRUPOS
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link font-weight-bold" href="{% url 'listar_alunos' %}" id="link-alunos">
+                        ALUNOS
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link font-weight-bold" href="{% url 'sorteio' %}" id="link-sorteio">
+                        SORTEIO
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link font-weight-bold" href="{% url 'listar_evento' %}" id="link-eventos">
+                        EVENTOS
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!--/.Navbar -->
+
+    {% block content %}
+    {% endblock  %}
+
+    <!-- JQuery -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.11/js/mdb.min.js"></script>
+
+    <script>
+        const linkTarefas = document.querySelector('#link-tarefas')
+        const linkGrupos = document.querySelector('#link-grupos')
+        const linkAlunos = document.querySelector('#link-alunos')
+        const linkImportar = document.querySelector('#link-importar')
+        const linkSorteio = document.querySelector('#link-sorteio')
+        const linkEventos = document.querySelector('#link-eventos')
+        const rotaAtual = window.location.pathname
+
+
+        if (rotaAtual.indexOf('tarefa') != -1 || rotaAtual == '/') {
+            linkTarefas.style = 'background: #252526;'
+        } else {
+            linkTarefas.style = 'background: hidden;'
+        }
+
+        if (rotaAtual.indexOf('grupo') != -1) {
+            linkGrupos.style = 'background: #252526;'
+        } else {
+            linkGrupos.style = 'background: hidden;'
+        }
+
+        if (rotaAtual.indexOf('aluno') != -1) {
+            linkAlunos.style = 'background: #252526;'
+        } else {
+            linkAlunos.style = 'background: hidden;'
+        }
+
+        if (rotaAtual.indexOf('importar') != -1) {
+            linkImportar.style = 'background: #252526;'
+        } else {
+            linkImportar.style = 'background: hidden;'
+        }
+
+        if (rotaAtual.indexOf('sorteio') != -1) {
+            linkSorteio.style = 'background: #252526;'
+        } else {
+            linkSorteio.style = 'background: hidden;'
+        }
+
+        if (rotaAtual.indexOf('evento') != -1) {
+            linkEventos.style = 'background: #252526;'
+        } else {
+            linkEventos.style = 'background: hidden;'
+        }
+
+    </script>
+
+</body>
+
+</html>

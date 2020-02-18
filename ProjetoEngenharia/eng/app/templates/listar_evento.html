@@ -1,0 +1,59 @@
+{% extends 'template_base.html' %}
+
+{% block content %}
+
+<div class="container-fluid" style="height: 90%;">
+    <div class="row justify-content-center">
+        <h2 class="font-weight-bold mt-4">Eventos</h2>
+    </div>
+    <div class="container-fluid mt-3">
+        <div class="d-flex flex-wrap">
+            {% if list_evento %}
+                {% for evento in list_evento %}
+                <!-- Card Evento -->
+                <a href="{% url 'detalhes_evento' evento.id %}" class="card-link">
+                    <div class="my-card-eventos elegant-color z-depth-2 mb-auto m-3">
+                        <div class="d-flex flex-column text-center p-3">
+                            <div class="text-titulo-card">
+                                {{ evento.titulo }}
+                            </div>
+                            <div class="linha-card"></div>
+                            <div class="text-subtitulo-card overflow-hidden mb-2">
+                                01/01/2020 - 31/01/2020
+                            </div>
+                            <div class="text-subtitulo-card overflow-hidden mb-3">
+                                Seg - Ter - Qua
+                            </div>
+                            <div class="text-descricao-card overflow-hidden mb-2">
+                                {{ evento.descricao }}
+                            </div>
+                            {% for tarefa in list_tarefa_evento %}
+                                {% if tarefa.evento.id == evento.id %}
+                                    <div class="mt-1 text-subtitulo-card ">
+                                        {{ tarefa.tarefa }}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                            <div class="linha-card"></div>
+                            <div class="d-flex justify-content-center flex-wrap">
+                                <a href="{% url 'excluir_evento' evento.id %}" class="btn-floating btn-large red" id="bt-delete">
+                                    <i class="large material-icons">delete</i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="fixed-action-btn">
+    <a class="btn-floating btn-large purple" href="{% url 'criar_evento' %}">
+        <i class="large material-icons">add</i>
+    </a>
+</div>
+
+
+{% endblock %}

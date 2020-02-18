@@ -1,38 +1,60 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-{% load static %}
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Tarefa</title>
-    <link rel="stylesheet" href="{% static 'css/template-base.css' %}">
-    <link rel="stylesheet" href="{% static 'css/nova-tarefa.css' %}">
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap" rel="stylesheet">
-</head>
+{% extends 'template_base.html' %}
 
-<body>
+{% block content %}
 
-    <nav class="menu-superior">
-        <a href="{% url 'home' %}" class="item-menu-superior fundo-vermelho">Tarefas</a>
-        <a href="{% url 'listar_alunos' %}" class="item-menu-superior fundo-vermelho">Alunos</a>
-    </nav>
+<div class="container mt-5">
 
-    <div class="container-conteudo">
-        <h2>Nova Tarefa</h2>
-        <form action="{% url 'create_tarefa' %}" method="post" class="container-formulario">
-        	{% csrf_token %}
-            <h3>Título</h3>
-			<input type="text" name="nome" id="tarefa-titulo"  placeholder="Tarefa">
-            <h3>Descricao</h3>
-            <textarea name="desc" id="tarefa-descricao" cols="30" rows="10" placeholder="Descricao"></textarea>
-            <h3>Data</h3>
-            <input type="date" name="data" id="tarefa-data">
-            <input type="submit" name="Salvar" class="botao importar centro"/>
-        </form>
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-sm-12">
+            <form action="{% url 'create_tarefa' %}" method="post" class="border border-dark z-depth-2 p-5">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="tarefa-titulo">
+                        <h5 class="white-text font-weight-bold">Título</h5>
+                    </label>
+                    <input type="text" class="form-control" id="tarefa-titulo" name="nome"
+                        placeholder="Ex: Seminário sobre SCRUM" required>
+                </div>
+                <div class="form-group">
+                    <label for="tarefa-descricao">
+                        <h5 class="white-text font-weight-bold">Descrição</h5>
+                    </label>
+                    <textarea class="form-control" id="tarefa-descricao" name="desc" rows="3" 
+                        placeholder="Ex: O grupo deverá apresentar o principais pontos sobre SCRUM..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="tarefa-data">
+                        <h5 class="white-text font-weight-bold">Data</h5>
+                    </label>
+                    <input type="date" class="form-control" id="tarefa-data" name="data" required>
+                </div>
+                <div class="form-group">
+                    <label for="tarefa-minutos">
+                        <h5 class="white-text font-weight-bold">Duração (Minutos)</h5>
+                    </label>
+                    <input type="number" class="form-control" name="duracao" id="tarefa-minutos" placeholder="Ex: 10"
+                        required>
+                </div>
+                <div class="row justify-content-center" style="width: 100%;">
+                    <input type="submit" value="SALVAR" class="btn btn-cyan font-weight-bold mt-5">
+
+                </div>
+            </form>
+        </div>
     </div>
 
+</div>
 
-</body>
+<script>
+    // Setando a data atual no formulário de nova tarefa
+    const dt = new Date()
+    const ano = dt.getFullYear()
+    const mes = (dt.getMonth() + 1) > 9 ? dt.getMonth() + 1 : `0${dt.getMonth() + 1}`
+    const dia = dt.getDate() > 9 ? dt.getDate() : `0${dt.getDate()}`
+    const dataAtualString = `${ano}-${mes}-${dia}`;
+    const campoData = document.querySelector('#tarefa-data')
 
-</html>
+    campoData.value = dataAtualString
+</script>
+
+{% endblock  %}

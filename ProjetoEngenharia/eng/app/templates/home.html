@@ -1,56 +1,92 @@
-<html lang="pt-br">
-{% load static %}
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Tarefas</title>
-    <link rel="stylesheet" href="{% static 'css/tarefas.css' %}">
-    <link rel="stylesheet" href="{% static 'css/card-tarefa.css' %}">
-    <link rel="stylesheet" href="{% static 'css/template-base.css' %}">
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap" rel="stylesheet">
-</head>
+{% extends 'template_base.html' %}
 
-<body>
-    <nav class="menu-superior">
-        <a href="{% url 'home' %}" class="item-menu-superior fundo-vermelho">Tarefas</a>
-        <a href="{% url 'listar_alunos' %}" class="item-menu-superior fundo-vermelho">Alunos</a>
-    </nav>
+{% block content %}
+<div class="container-fluid">
 
-    <div class="container-principal">
+    <div class="row m-5 justify-content-center">
+        <h2 class="font-weight-bold">Tarefas</h2>
+    </div>
 
-        <div class="container-botoes">
-            <a href="{% url 'criar_tarefa' %}" class="botao importar">Nova Tarefa</a>
-            <form method="post" action="{% url 'importar' %}" enctype="multipart/form-data">
-		    	{% csrf_token %}
-		    	<input type="file" name="arquivo" />
-		    	<input type="submit" name="Enviar">
-		    </form>
+    <div class="row justify-content-end mr-2">
+        <div class="d-flex flex-column">
+            <h4>Ordem de listagem</h4>
+            <form action="{% url 'ordenacao' %}" method="POST" class="d-flex flex-column justify-content-center">
+                {% csrf_token %}
+                <select class="browser-default custom-select bg-dark white-text" name="ordem" id="select-ordenacao">
+                    <option selected>Selecione</option>
+                    <option value="1">Data</option>
+                    <option value="2">Tempo de Apresentação</option>
+                </select>
+                <label for="submit-ordenacao" class="btn-floating btn-large purple align-self-center m-2" id="bt-send-file">
+                    <i class="material-icons">done</i>
+                </label>
+                <input type="submit" value="Enviar" id="submit-ordenacao" style="display: none;">
+            </form>
         </div>
+    </div>
 
-        <div class="container-listagem">
-
-            <div class="container-cards">
-            	{% if list_tarefa %}
-            	{% for t in list_tarefa %}	
-	                <a href="{% url 'listar_tarefa' t.id %}">
-	                    <div class="card">
-	                            <img src="{% static 'img/ic_tarefa_laranja.jpg' %}" />
-	                            <span class="titulo-card">{{ t.tarefa }}</span>
-	                            <span class="data-card">20/10/2019</span>
-	                            <span class="descricao-card">{{ t.descricao }}</span>
-	                            <span class="aluno-card">{{ t.aluno.nome_aluno }}</span>
-	                    </div>
-	                </a>
-	            {% endfor %}
-	            {% endif %}
+    <div class="row container-fluid d-flex pb-5">
+        {% if list_tarefa %}
+            {% for tarefa in list_tarefa %}
+            <div class="largura-card elegant-color z-depth-2 mb-auto m-5">
+                <div class="d-flex flex-column text-center p-3">
+                    <div class="text-titulo-card">
+                        {{ tarefa.tarefa }}
+                    </div>
+                    <div class="linha-card"></div>
+                    <div class="m-2 text-subtitulo-card">
+                        {{ tarefa.duracao }} minutos
+                    </div>
+                    <div class="text-descricao-card overflow-hidden">
+                        {{ tarefa.descricao }}
+                    </div>
+                    <div class="m-2 text-subtitulo-card">
+                        {% if tarefa.aluno %}
+                            {{ tarefa.aluno.nome_aluno }}
+                        {% elif tarefa.grupo %}
+                            Grupo {{ tarefa.grupo.id }}
+                        {% else %}
+                            Nenhum grupo/aluno sorteado
+                        {% endif %}
+                    </div>
+                    <div class="linha-card mb-3"></div>
+                    <div class="d-flex justify-content-between flex-row flex-wrap">
+                        <a href="{% url 'sortear' tarefa.id %}" class="btn-floating btn-large green">
+                            <i class="large material-icons">sort</i>
+                        </a>
+                        <a href="{% url 'editar_tarefa' tarefa.id %}" class="btn-floating btn-large cyan">
+                            <i class="large material-icons">edit</i>
+                        </a>
+                        <a href="{% url 'excluir_tarefa' tarefa.id %}" class="btn-floating btn-large red">
+                            <i class="large material-icons">delete</i>
+                        </a>
+                    </div>
+                </div>
             </div>
-            
-        </div>
+            {% endfor %}
+        {% endif %}
+    </div>
 
+    <div class="fixed-action-btn">
+        <a href="{% url 'criar_tarefa' %}" class="btn-floating btn-large purple">
+            <i class="large material-icons">add</i>
+        </a>
     </div>
 
 
-</body>
+</div>
 
-</html>
+<script>
+    const submitOrdenacao = document.querySelector('#submit-ordenacao')
+    const selectOrdenacao = document.querySelector('#select-ordenacao')
+
+    submitOrdenacao.addEventListener('click', (event) => {
+        if (selectOrdenacao.selectedIndex === 0) {
+            event.preventDefault()
+        }
+    })
+
+    selectOrdenacao.selectedIndex = {{ opcao_ordenacao }}
+</script>
+
+{% endblock  %}

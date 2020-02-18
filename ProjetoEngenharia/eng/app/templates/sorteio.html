@@ -1,0 +1,247 @@
+{% extends 'template_base.html' %}
+
+{% block content %}
+
+<div class="container-fluid" style="height: 80vh;">
+    <div class="row justify-content-center p-3">
+        <h2 class="font-weight-bold">Sorteio</h2>
+    </div>
+    <div class="row" style="height: 100%;">
+        <div class="col-6 border-right">
+            <h3 class="text-center font-weight-bold">Tarefas</h3>
+            <div class="d-flex flex-wrap pl-5 pb-5" id="container-cards-tarefas">
+                {% if list_tarefa %}
+                    {% for tarefa in list_tarefa %}
+                        <!-- Card Tarefa -->
+                        <div class="my-card-tarefas elegant-color z-depth-2 mb-auto m-3" id="{{ tarefa.id }}">
+                            <div class="d-flex flex-column text-center p-3">
+                                <div class="text-titulo-card">
+                                    {{ tarefa.tarefa }}
+                                </div>
+                                <div class="linha-card"></div>
+                                <div class="m-2 text-subtitulo-card">
+                                    {{ tarefa.data_entrega|date:'d/m/Y' }} | {{ tarefa.duracao }} minutos
+                                </div>
+                                <div class="text-descricao-card overflow-hidden">
+                                    {{ tarefa.descricao }}
+                                </div>
+                                <div class="m-2 text-subtitulo-card">
+                                    {% if tarefa.aluno %}
+                                        {{ tarefa.aluno.nome_aluno }}
+                                    {% elif tarefa.grupo %}
+                                        Grupo {{ tarefa.grupo.id }}
+                                    {% else %}
+                                        Nenhum grupo/aluno sorteado
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-6 border-left">
+
+            <div class="row justify-content-center">
+                <label class="h4 font-weight-bold text-center">Sortear por:</label>
+                <div class="custom-control custom-radio custom-control-inline ml-3">
+                    <input type="radio" name="rb-tipo-sorteio" id="rb-alunos" class="custom-control-input"
+                        value="alunos">
+                    <label for="rb-alunos" class="custom-control-label h5">Alunos</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" name="rb-tipo-sorteio" id="rb-grupos" class="custom-control-input"
+                        value="grupos">
+                    <label for="rb-grupos" class="custom-control-label h5">Grupos</label>
+                </div>
+            </div>
+
+            <div class="d-flex flex-wrap justify-content-center" id="container-cards-grupos">
+
+                {% if list_grupo %}
+                    {% for grupo in list_grupo %}
+                        <!-- Card Grupo -->
+                        <div class="my-card-grupos z-depth-2 m-3 elegant-color" id="{{ grupo.id }}"
+                        style="display: none;">
+                            <div class="d-flex flex-column text-center p-3">
+                                <div class="card-title font-weight-bold text-titulo-card">Grupo {{ grupo.id }}</div>
+                                <div class="linha-card"></div>
+                                {% for aluno in list_aluno %}
+                                    <div class="text-subtitulo-card">
+                                        {% if aluno.grupo.id == grupo.id %}
+                                            {{ aluno.nome_aluno }}
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+            </div>
+
+            <div class="row justify-content-center m-5" id="container-alunos" 
+                style="display: none;">
+                <div class="table-responsive">
+                    <table class="table elegant-color mt-3 z-depth-2">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="th-sm white-text font-weight-bold h6">ID</th>
+                                <th scope="col" class="th-sm white-text font-weight-bold h6">NOME</th>
+                                <th scope="col" class="th-sm white-text font-weight-bold h6">GRUPO</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if list_aluno %}
+                                {% for aluno in list_aluno %}
+                                    <tr>
+                                        <td class="white-text h6">{{ aluno.id }}</td>
+                                        <td class="white-text h6">{{ aluno.nome_aluno }}</td>
+                                        <td class="white-text h6">{{ aluno.grupo.id }}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="fixed-action-btn">
+    <a class="btn-floating btn-large purple" href="{% url 'gerar_sorteio' %}" id="botao-sortear">
+        <i class="large material-icons">sort</i>
+    </a>
+</div>
+
+<script>
+    // Seleção de Cards
+    const containerCardsTarefas = document.querySelector('#container-cards-tarefas')
+    const containerCardsGrupos = document.querySelector('#container-cards-grupos')
+    const containerAlunos = document.querySelector('#container-alunos')
+    const rbGrupos = document.querySelector('#rb-grupos')
+    const rbAlunos = document.querySelector('#rb-alunos')
+    const cardsTarefa = document.querySelectorAll('.my-card-tarefas')
+    const cardsGrupos = document.querySelectorAll('.my-card-grupos')
+    const botaoSortear = document.querySelector('#botao-sortear')
+    let cardsTarefaSelecionados = []
+    let cardsGruposSelecionados = []
+
+
+    function isDark(stringClassesCard) {
+        return stringClassesCard.indexOf('elegant-color') != -1
+    }
+
+    function isGreen(stringClassesCard) {
+        return stringClassesCard.indexOf('green') != -1
+    }
+
+    function mudaCorCard(card) {
+        const classesCard = card.classList
+
+        if (isDark(classesCard.value)) {
+            classesCard.remove('elegant-color')
+            classesCard.add('green')
+        } else {
+            classesCard.remove('green')
+            classesCard.add('elegant-color')
+        }
+    }
+
+
+    cardsTarefa.forEach(card => {
+        card.addEventListener('click', () => { 
+            mudaCorCard(card) 
+            
+            if (isGreen(card.classList.value)) {
+                cardsTarefaSelecionados.push(card.id)  
+            } else {
+                const posicaoCard = cardsTarefaSelecionados.indexOf(card.id)
+                if (posicaoCard != -1) {
+                    cardsTarefaSelecionados.splice(posicaoCard, 1)
+                }
+            }
+        })
+        card.style = 'cursor: pointer;'
+    })
+
+    cardsGrupos.forEach(card => {
+        card.addEventListener('click', () => { 
+            mudaCorCard(card) 
+
+            if (isGreen(card.classList.value)) {
+                cardsGruposSelecionados.push(card.id)  
+            } else {
+                const posicaoCard = cardsGruposSelecionados.indexOf(card.id)
+                if (posicaoCard != -1) {
+                    cardsGruposSelecionados.splice(posicaoCard, 1)
+                }
+            }
+        })
+    })
+
+    botaoSortear.addEventListener('click', (event) => {
+        if (rbGrupos.checked) {
+            $.ajax({
+                url: '{% url "gerar_sorteio" %}',
+                method: 'POST',
+                dataType: 'json',
+                data: { 
+                    tarefas: cardsTarefaSelecionados, 
+                    grupos: cardsGruposSelecionados,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function(data) {
+                    //alert("Cadastro realizado com sucesso!");
+                },
+                failure: function(data) {
+                    //alert("Ocorreu um erro, realize a operação novamente");
+                }
+            }).done(function(data){
+                //alert(data);
+            });
+
+        } else {
+            $.ajax({
+                url: '{% url "gerar_sorteio" %}',
+                method: 'POST',
+                dataType: 'json',
+                data: { 
+                    tarefas: cardsTarefaSelecionados, 
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function(data) {
+                    //alert("Cadastro realizado com sucesso!");
+                },
+                failure: function(data) {
+                    //alert("Ocorreu um erro, realize a operação novamente");
+                }
+            }).done(function(data){
+                //alert(data);
+            });
+        }
+    })
+
+
+    // Tipo de sorteio
+    rbGrupos.addEventListener('change', (event) => {
+        cardsGrupos.forEach(card => {
+            card.style = 'display: block;'
+            card.style = 'cursor: pointer;'
+        })
+        containerAlunos.style = 'display: none;'
+    })
+
+    rbAlunos.addEventListener('change', (event) => {
+        cardsGrupos.forEach(card => card.style = 'display: none;')
+        containerAlunos.style = 'display: block;'
+    })
+
+</script>
+
+{% endblock  %}

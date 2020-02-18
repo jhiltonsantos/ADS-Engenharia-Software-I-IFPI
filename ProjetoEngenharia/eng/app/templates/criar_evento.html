@@ -1,0 +1,248 @@
+{% extends 'template_base.html' %}
+
+{% block content %}
+<div class="container-fluid" style="height: 90%;">
+    <div class="row justify-content-center pt-3">
+        <div class="col-lg-6 col-sm-12">
+
+            <div class="border border-dark p-5 z-depth-5">
+                <div class="form-group">
+                    <label for="evento-titulo">
+                        <h5 class="font-weight-bold">Título</h5>
+                    </label>
+                    <input type="text" class="form-control" id="evento-titulo" name="nome" required>
+                </div>
+                <div class="form-group">
+                    <label for="evento-descricao">
+                        <h5 class="font-weight-bold">Descrição</h5>
+                    </label>
+                    <textarea class="form-control" id="evento-descricao" name="desc" rows="3"
+                        placeholder="Opcional"></textarea>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <div class="form-group" style="width: 40%;">
+                        <label for="evento-data-inicio">
+                            <h5 class="white-text font-weight-bold">Data de Inicio</h5>
+                        </label>
+                        <input type="date" class="form-control" id="evento-data-inicio" name="dtIni" required>
+                    </div>
+                    <div class="form-group" style="width: 40%;">
+                        <label for="evento-data-final">
+                            <h5 class="white-text font-weight-bold">Data de Final</h5>
+                        </label>
+                        <input type="date" class="form-control" id="evento-data-final" name="dtFin" required>
+                    </div>
+                </div>
+
+                <h5 class="font-weight-bold">Dias da Semana</h5>
+                <select class="custom-select mb-3" id="select-dias-semana" 
+                    style="height: 160px; width: 30%;" multiple required >
+                    <option value="Dom">Domingo</option>
+                    <option value="Seg">Segunda</option>
+                    <option value="Ter">Terça</option>
+                    <option value="Qua">Quarta</option>
+                    <option value="Qui">Quinta</option>
+                    <option value="Sex">Sexta</option>
+                    <option value="Sab">Sábado</option>
+                </select>
+
+                <h5 class="font-weight-bold">Selecione a(s) tarefa(s):</h5>
+                <div class="d-flex flex-wrap pt-2">
+
+                    {% if tarefas_disp %}
+                        {% for tarefa in tarefas_disp %}
+                            <div class="my-card-tarefas elegant-color z-depth-2 mb-auto m-2" id="{{ tarefa.id }}">
+                                <div class="d-flex flex-column text-center p-3">
+                                    <div class="text-titulo-card">
+                                        {{ tarefa.tarefa }}
+                                    </div>
+                                    <div class="linha-card"></div>
+                                    <div class="m-2 text-subtitulo-card">
+                                        {{ tarefa.duracao }} minutos
+                                    </div>
+                                    <div class="text-descricao-card overflow-hidden">
+                                        {{ tarefa.descricao }}
+                                    </div>
+                                    <div class="m-2 text-subtitulo-card">
+                                        {% if tarefa.aluno %}
+                                            {{ tarefa.aluno.nome_aluno }}
+                                        {% elif tarefa.grupo %}
+                                            Grupo {{ tarefa.grupo.id }}
+                                        {% else %}
+                                            Nenhum grupo/aluno sorteado
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                            
+                </div>
+                <div class="fixed-action-btn">
+                    <a href="{% url 'listar_evento' %}" class="btn-floating btn-large cyan" id="bt-salvar">
+                        <i class="large material-icons">save</i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+    // VARIAVÉIS
+    const cardsTarefas = document.querySelectorAll('.my-card-tarefas')
+    const btSalvar = document.querySelector('#bt-salvar')
+    const selectDiasSemana = document.querySelector('#select-dias-semana')
+    const eventoDataInicio = document.querySelector('#evento-data-inicio')
+    const eventoDataFinal = document.querySelector('#evento-data-final')
+    const eventoNome = document.querySelector('#evento-titulo')
+    const eventoDesc = document.querySelector('#evento-descricao')
+    let cardsTarefasSelecionados = []
+    let diasSemanaSelecionados = []
+
+    // FUNÇÕES
+    function getDataAtual() {
+        const dt = new Date()
+        const ano = dt.getFullYear()
+        const mes = (dt.getMonth() + 1) > 9 ? dt.getMonth() + 1 : `0${dt.getMonth() + 1}`
+        const dia = dt.getDate() > 9 ? dt.getDate() : `0${dt.getDate()}`
+        const dataAtualString = `${ano}-${mes}-${dia}`;
+
+        return dataAtualString
+    }
+
+    function periodoEventoEhValido(dataInicio, dataFinal) {
+        const arrayDataInicio = dataInicio.split('-')
+        const arrayDataFinal = dataFinal.split('-')
+        
+        const diaDataInicio = parseInt(arrayDataInicio[2])
+        const mesDataInicio = parseInt(arrayDataInicio[1])
+        const anoDataInicio = parseInt(arrayDataInicio[0])
+        
+        const diaDataFinal = parseInt(arrayDataFinal[2])
+        const mesDataFinal = parseInt(arrayDataFinal[1])
+        const anoDataFinal = parseInt(arrayDataFinal[0])
+
+        if (anoDataInicio > anoDataFinal) {
+            console.log('Ano inválido')
+            return false
+        } else {
+            if (anoDataInicio === anoDataFinal) {
+                if (mesDataInicio > mesDataFinal) {
+                    console.log('Mes invalido')
+                    return false
+                } else {
+                    if (mesDataInicio === mesDataFinal) {
+                        if (diaDataInicio > diaDataFinal) {
+                            console.log('Dia invalido')
+                            return false
+                        }
+                    }
+                }
+            }
+        }
+
+        return true
+    }
+
+    function isDark(stringClassesCard) {
+        return stringClassesCard.indexOf('elegant-color') != -1
+    }
+
+    function isGreen(stringClassesCard) {
+        return stringClassesCard.indexOf('green') != -1
+    }
+
+    function mudaCorCard(card) {
+        const classesCard = card.classList
+
+        if (isDark(classesCard.value)) {
+            classesCard.remove('elegant-color')
+            classesCard.add('green')
+        } else {
+            classesCard.remove('green')
+            classesCard.add('elegant-color')
+        }
+    }
+
+    // SELEÇÃO DE CARDS
+    cardsTarefas.forEach(card => {
+        card.addEventListener('click', () => {
+            mudaCorCard(card)
+
+            if (isGreen(card.classList.value)) {
+                cardsTarefasSelecionados.push(card.id)
+            } else {
+                const posicaoCard = cardsTarefasSelecionados.indexOf(card.id)
+
+                if (posicaoCard != -1) {
+                    cardsTarefasSelecionados.splice(posicaoCard, 1)
+                }
+            }
+        })
+        card.style = 'cursor: pointer;'
+    })
+
+    // SALVANDO EVENTO
+    btSalvar.addEventListener('click', (event) => {
+        if (!periodoEventoEhValido(eventoDataInicio.value, eventoDataFinal.value)) {
+            event.preventDefault()
+            alert('Período do evento inválido')
+        } else {
+            $.ajax({
+                url: '{% url "create_evento" %}',
+                method: 'POST',
+                dataType: 'json',
+                data: {
+                    tarefas: cardsTarefaSelecionados,
+                    dias: diasSemanaSelecionados,
+                    dtIni: eventoDataInicio.value,
+                    dtFim: eventoDataFinal.value,
+                    nome: eventoNome.value,
+                    desc: eventoDesc.value,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function (data) {
+                    //alert("Cadastro realizado com sucesso!");
+                },
+                failure: function (data) {
+                    //alert("Ocorreu um erro, realize a operação novamente");
+                }
+            }).done(function (data) {
+                //alert(data);
+            });
+        }
+    })
+
+    // MONITORANDO A SELEÇÃO DOS DIAS DA SEMANA
+    selectDiasSemana.addEventListener('change', () => {
+        arrayDiasSemana = Array.from(selectDiasSemana)
+        
+        arrayDiasSemana.forEach((opcao) => {
+            const diaSelecionado = opcao.value
+            const posicaoDiaSelecionado = diasSemanaSelecionados.indexOf(diaSelecionado)
+                
+            if (opcao.selected) {
+                if (posicaoDiaSelecionado === -1) {
+                    diasSemanaSelecionados.push(diaSelecionado)
+                }
+            } else {
+                if (posicaoDiaSelecionado != -1) {
+                    diasSemanaSelecionados.splice(posicaoDiaSelecionado, 1)
+                }
+            }
+    
+        })
+
+        console.log(diasSemanaSelecionados)
+    })
+
+    // SETANDO DATA ATUAL EM CAMPOS DATE
+    eventoDataInicio.value = getDataAtual()
+    eventoDataFinal.value = getDataAtual()
+
+</script>
+{% endblock  %}

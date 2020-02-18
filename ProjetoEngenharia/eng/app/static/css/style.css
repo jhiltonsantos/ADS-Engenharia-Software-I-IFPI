@@ -1,3 +1,143 @@
-.menu{
-    color: red;
+/* Importações */
+@import url('https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto Slab', serif;
+}
+
+html, body {
+    height: 100%;
+    background: #252526;
+}
+
+.button-circle {
+    border-radius: 30px;
+}
+
+input[type='file'] {
+    display: none;
+}
+
+#submit-upload {
+    display: none;
+}
+
+.nav-link:hover {
+    background: #252526;
+}
+
+.fixed-action-btn {
+    position: fixed;
+    right: 23px;
+    bottom: 23px;
+    padding-top: 15px;
+    margin-bottom: 0;
+    z-index: 997;
+    bottom: 45px;
+    right: 24px;
+}
+
+.btn-floating.btn-large {
+    width: 56px;
+    height: 56px;
+    padding: 0;
+}
+
+.btn-large {
+    height: 54px;
+    line-height: 54px;
+    font-size: 15px;
+    padding: 0 28px;
+}
+
+.btn-floating {
+    display: inline-block;
+    color: #ffffff;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    padding: 0;
+    border-radius: 50%;
+    -webkit-transition: background-color .3s;
+    transition: background-color .3s;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.btn-floating.btn-large i {
+    line-height: 56px;
+}
+
+.btn-floating i {
+    width: inherit;
+    display: inline-block;
+    text-align: center;
+    color: #ffffff;
+    font-size: 1.6rem;
+    line-height: 40px;
+}
+
+.text-titulo-card {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.text-descricao-card {
+    font-size: 1em;
+    font-weight: 300;
+}
+
+.text-subtitulo-card {
+    font-size: 1.2em;
+}
+
+.linha-card {
+    border-bottom: 1px solid #ffffff;
+    margin: 15px 0;
+}
+
+.altura-card {
+    height: fit-content;
+}
+
+.largura-card {
+    width: 350px;
+}
+
+th, td {
+    text-align: center;
+}
+
+.my-card-tarefas {
+    width: 350px;
+    height: fit-content;
+}
+
+.my-card-grupos {
+    width: auto;
+    height: fit-content;
+}
+
+.my-card-eventos {
+    width: 350px;
+    height: fit-content;
+}
+
+.card-link {
+    text-decoration: none;
+    color: white;
+}
+
+.card-link:hover {
+    color: white;
+}
+
+#salvar-evento {
+    display: none;
 }
