@@ -1,6 +1,8 @@
 "DIA","PONTOS","BACKLOG"
-"1","40","Criar protótipo wireframes"
-"2","40","Cadastro de usuários"
-"3","20","Marcar Horário"
-"4","10","Listar salões"
-
+"0","40","Criar protótipo wireframes"
+"5","40","Cadastro de usuários"
+"10","20","Cadastro de salões"
+"15","10","Marcar Horário"
+"20","10","Listar salões"
+"25","10","Filtrar salões"
+"30","10","Criar BD para cache de dados da aplicação"
